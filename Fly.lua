@@ -100,6 +100,12 @@ UserInputService.InputBegan:Connect(function(Key)
 		if Key.KeyCode == Enum.KeyCode.F then
 			Fly()
 		end
+		if Key.KeyCode == Enum.KeyCode.Plus then
+			FlySpeed = FlySpeed + 0.1
+		end
+		if Key.KeyCode == Enum.KeyCode.Minus then
+			FlySpeed = FlySpeed - 0.1
+		end
 	end
 end)
 
