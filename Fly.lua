@@ -1,3 +1,11 @@
+--[[
+if you use this here is some reminders
+Q makes you go down
+E makes you go up
+- makes you go slower
++ makes you go faster
+]]
+
 local LocalPlayer = game.Players.LocalPlayer
 
 local newInstance = Instance.new
