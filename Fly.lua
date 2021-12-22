@@ -32,10 +32,10 @@ local Fly = function()
 		local Idle = true
 		local Camera = workspace.CurrentCamera
 	
-		BodyPosition.maxForce = newVector3(math.huge, math.huge, math.huge)
+		BodyPosition.MaxForce = newVector3(math.huge, math.huge, math.huge)
 		BodyPosition.Position = Torso.Position
-		BodyGyro.maxTorque = newVector3(9e9, 9e9, 9e9)
-		BodyGyro.cframe = Torso.CFrame
+		BodyGyro.MaxTorque = newVector3(9e9, 9e9, 9e9)
+		BodyGyro.CFrame = Torso.CFrame
 	
 		coroutine.resume(coroutine.create(function()
 			Stepped:Connect(function()
