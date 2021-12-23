@@ -29,6 +29,8 @@ local Keys = {
 	['A'] = false;
 	['E'] = false;
 	['Q'] = false;
+	['Equal'] = false;
+	['Minus'] = false;
 }
 
 local Fly = function()
@@ -38,46 +40,53 @@ local Fly = function()
 
 		local BodyPosition = newInstance('BodyPosition', Torso)
 		local BodyGyro = newInstance('BodyGyro', Torso )
-
-		local Idle = true
-		local Camera = workspace.CurrentCamera
 	
 		BodyPosition.MaxForce = newVector3(math.huge, math.huge, math.huge)
 		BodyPosition.Position = Torso.Position
 		BodyGyro.MaxTorque = newVector3(9e9, 9e9, 9e9)
 		BodyGyro.CFrame = Torso.CFrame
-	
-		coroutine.resume(coroutine.create(function()
-			FlyConnection = Stepped:Connect(function()
-				local Gyro = BodyGyro.CFrame - BodyGyro.CFrame.Position + BodyPosition.Position
 
-				if Keys.W then
-					Gyro = Gyro + Camera.CFrame.LookVector * FlySpeed
-					BodyGyro.CFrame = Camera.CFrame * CFrameAngles(-math.rad(20), math.rad(0), math.rad(0))
-				end
-				if Keys.S then
-					Gyro = Gyro - Camera.CFrame.LookVector * FlySpeed
-					BodyGyro.CFrame = Camera.CFrame * CFrameAngles(math.rad(70), math.rad(0), math.rad(0))
-				end
-				if Keys.D then
-					Gyro = Gyro * newCFrame(FlySpeed, 0, 0)
-				end
-				if Keys.A then
-					Gyro = Gyro * newCFrame(-FlySpeed, 0, 0)
-				end
-				if Keys.E then
-					Gyro = Gyro * newCFrame(0,FlySpeed,0)
-				end
-				if Keys.Q then
-					Gyro = Gyro * newCFrame(0,-FlySpeed,0)
-				end
-				BodyPosition.Position = Gyro.Position
+		local Hover, NormalFly = false, true
 
-				if Idle and not Keys.S and not Keys.W  then
-					BodyGyro.CFrame = Camera.CFrame
-				end
-			end)
-		end))
+		local Idle = true
+		local Camera = workspace.CurrentCamera
+
+		FlyConnection = Stepped:Connect(function()
+			local Gyro = BodyGyro.CFrame - BodyGyro.CFrame.Position + BodyPosition.Position
+
+			if Keys.W then
+				Gyro = Gyro + Camera.CFrame.LookVector * FlySpeed
+				BodyGyro.CFrame = Camera.CFrame * CFrameAngles(math.rad(-50), math.rad(0), math.rad(0))
+			end
+			if Keys.S then
+				Gyro = Gyro - Camera.CFrame.LookVector * FlySpeed
+				BodyGyro.CFrame = Camera.CFrame * CFrameAngles(math.rad(70), math.rad(0), math.rad(0))
+			end
+			if Keys.D then
+				Gyro = Gyro * newCFrame(FlySpeed, 0, 0)
+			end
+			if Keys.A then
+				Gyro = Gyro * newCFrame(-FlySpeed, 0, 0)
+			end
+			if Keys.E then
+				Gyro = Gyro * newCFrame(0,FlySpeed,0)
+			end
+			if Keys.Q then
+				Gyro = Gyro * newCFrame(0,-FlySpeed,0)
+			end
+			if Keys.Equal then
+				FlySpeed = FlySpeed + 0.1
+			end
+			if Keys.Minus then
+				FlySpeed = FlySpeed - 0.1
+			end
+
+			BodyPosition.Position = Gyro.Position
+
+			if Idle and not Keys.S and not Keys.W then
+				BodyGyro.CFrame = Camera.CFrame 
+			end
+		end)
 	else
 		LocalPlayer.Character.Humanoid.PlatformStand = false
 		Torso.BodyPosition:Destroy()
@@ -86,6 +95,7 @@ local Fly = function()
 		FlyConnection = nil
 	end
 end
+
 
 UserInputService.InputBegan:Connect(function(Key)
 	if not GetFocusedTextBox(UserInputService) then
@@ -111,10 +121,10 @@ UserInputService.InputBegan:Connect(function(Key)
 			Fly()
 		end
 		if Key.KeyCode == Enum.KeyCode.Equals then
-			FlySpeed = FlySpeed + 0.1
+			Keys.Equal = true
 		end
 		if Key.KeyCode == Enum.KeyCode.Minus then
-			FlySpeed = FlySpeed - 0.1
+			Keys.Minus = true
 		end
 	end
 end)
@@ -138,6 +148,12 @@ UserInputService.InputEnded:Connect(function(Key)
 		end
 		if Key.KeyCode == Enum.KeyCode.Q then
 			Keys.Q = false
+		end
+		if Key.KeyCode == Enum.KeyCode.Equals then
+			Keys.Equal = false
+		end
+		if Key.KeyCode == Enum.KeyCode.Minus then
+			Keys.Minus = false
 		end
 	end
 end)
