@@ -20,6 +20,8 @@ local Flying, FlySpeed = false, 1
 local RunService = game:GetService('RunService')
 local Stepped = RunService.Stepped
 
+local FlyConnection
+
 local Keys = {
 	['W'] = false;
 	['S'] = false;
@@ -46,7 +48,7 @@ local Fly = function()
 		BodyGyro.CFrame = Torso.CFrame
 	
 		coroutine.resume(coroutine.create(function()
-			Stepped:Connect(function()
+			FlyConnection = Stepped:Connect(function()
 				local Gyro = BodyGyro.CFrame - BodyGyro.CFrame.Position + BodyPosition.Position
 
 				if Keys.W then
@@ -80,10 +82,10 @@ local Fly = function()
 		LocalPlayer.Character.Humanoid.PlatformStand = false
 		Torso.BodyPosition:Destroy()
 		Torso.BodyGyro:Destroy()
+		FlyConnection:Disconnect()
+		FlyConnection = nil
 	end
 end
-
-
 
 UserInputService.InputBegan:Connect(function(Key)
 	if not GetFocusedTextBox(UserInputService) then
@@ -105,10 +107,10 @@ UserInputService.InputBegan:Connect(function(Key)
 		if Key.KeyCode == Enum.KeyCode.Q then
 			Keys.Q = true
 		end
-		if Key.KeyCode == Enum.KeyCode.F then
+		if Key.KeyCode == Enum.KeyCode.T then
 			Fly()
 		end
-		if Key.KeyCode == Enum.KeyCode.Plus then
+		if Key.KeyCode == Enum.KeyCode.Equals then
 			FlySpeed = FlySpeed + 0.1
 		end
 		if Key.KeyCode == Enum.KeyCode.Minus then
