@@ -107,7 +107,7 @@ UserInputService.InputBegan:Connect(function(Key)
 		if Key.KeyCode == Enum.KeyCode.Q then
 			Keys.Q = true
 		end
-		if Key.KeyCode == Enum.KeyCode.T then
+		if Key.KeyCode == Enum.KeyCode.F then
 			Fly()
 		end
 		if Key.KeyCode == Enum.KeyCode.Equals then
